@@ -1,0 +1,80 @@
+
+## We are pushing the limits of imaging neural activity with light
+
+
+* deeper in the brain: three-photon imaging (Cloves + Margrie 2025)
+* higher frequency: 
+  * voltage imaging
+  * various GECI indicators 
+* more of the brain: meso-scale imaging
+* in a more naturalistic setting: freely moving
+* larger volumes: light bead microscopy
+* for longer: multiday recordings
+* more control: optical stimulation
+
+Analysis tools need to be chosen appropriately.
+
+## Analysis of multiphoton imaging series
+
+* image acquisition ) -> motion correction -> segmentation on a reference image -> fluorescence extraction -> DF/F -> deconvolution ( -> downstream analysis
+
+## Analysis software ecosystem is fragmented, fragile and rigid
+
+Widely adopted tools:
+Suite2p: good for cortical two-photon. Most popular. Bugs don't get ans
+CaImAn: good for 1-photon (worse SNR)
+In practice, both applied to similar experiments.
+Many labs also roll their own
+
+Commercial tools (?)
+
+Not interoperable -> hard to benchmark, hard to compare, hard to adapt to new experiments
+Need flexibility, guidance, performance, transparency, collaboration
+
+Improving on this needs community buy-in
+
+## Building tools and community in multi-photon imaging
+
+Laura, Joanne, Alessandro,
+Arielle, Alessio, Johannes, Jerome, Sean, 
+Georg
+Florian,Adam Charles
+
+## Photon-mosaic: Vision
+
+* simplicity
+* flexibility
+* performance
+* quality control
+* community
+
+## Simplicity
+
+
+## Flexibility
+
+`photon-mosaic` API
+
+* Python API wrapping / re-implementing CaImAn + Suite2p
+* `spikeinterface`-like design
+
+TODO: code example
+
+## Community
+
+3 conference poster
+hackdays
+frequent check-ins with researchers
+you?
+
+## Example
+
+synthetic data (gcamp6s parameters)
+
+## Initial release
+
+
+## performance at scale
+`photon-mosaic-pipeline`
+
+* scalability: pipelining tool for HPC batch jobs
