@@ -1,7 +1,39 @@
 
+
+## Analysis of multiphoton imaging series
+
+
+
+* image acquisition ) -> motion correction -> segmentation on a reference image -> fluorescence extraction -> DF/F -> deconvolution ( -> downstream analysis
+
+::: {.notes}
+Multi-photon imaging is technique we can use to learn about what is going on in the brain, and making sense of this data requires goog analysis tools.
+
+In a typical analysis pipeline, we would typically have these kind of steps in this sequence.
+:::
+
+
+## Analysis of multiphoton imaging series
+
+:::: {.columns}
+::: {.column width="50%"}
+![Suite2p logo](img/suite2p_logo.png)
+:::
+
+::: {.column width="50%"}
+![CaImAn logo](img/caiman_logo.png)
+:::
+::::
+
+Existing open-source tools are great and fit-for-purpose for standard experiments.
+
 ## We are pushing the limits of imaging neural activity with light
 
+<iframe src="https://elifesciences.org/articles/107540/figures#video1" width="100%" height="500" style="border: 0;" allowfullscreen></iframe>
 
+Analysis tools need to be chosen appropriately.
+
+::: {.notes}
 * deeper in the brain: three-photon imaging (Cloves + Margrie 2025)
 * higher frequency: 
   * voltage imaging
@@ -11,34 +43,35 @@
 * larger volumes: light bead microscopy
 * for longer: multiday recordings
 * more control: optical stimulation
+:::
 
-Analysis tools need to be chosen appropriately.
+## To deal with this complexity, we need to coordinate analysis software at a community level
 
-## Analysis of multiphoton imaging series
+:::: {.columns}
+::: {.column width="50%"}
+![Suite2p logo](img/suite2p_logo.png)
+:::
 
-* image acquisition ) -> motion correction -> segmentation on a reference image -> fluorescence extraction -> DF/F -> deconvolution ( -> downstream analysis
+::: {.column width="50%"}
+![CaImAn logo](img/caiman_logo.png)
+:::
+::::
 
-## Analysis software ecosystem is fragmented, fragile and rigid
+Current open-source tools are hard to compare, combine and adapt for more complex data.
 
-Widely adopted tools:
-Suite2p: good for cortical two-photon. Most popular. Bugs don't get ans
-CaImAn: good for 1-photon (worse SNR)
-In practice, both applied to similar experiments.
-Many labs also roll their own
+::: {.notes}
+So there are some widely adopted open-source tools in the functional imaging space. The mostly widely used, as far as I can tell, are Suite2p and CaImAn. Caim have slighly different strengths, but are defacto used interchangeably by researchers. They are great tools, and there are many others. What also happens is that labs make their own pipelines.
 
-Commercial tools (?)
+All of this has some problems. The tools are not interoperable with each other: if you use the registration algorithm from one, you are locked-into the segmentation step of the same tool. Work is duplicated, and the support for these tools could be better.
 
-Not interoperable -> hard to benchmark, hard to compare, hard to adapt to new experiments
-Need flexibility, guidance, performance, transparency, collaboration
+So to adapt to our changing needs, we need to improve on this. Areas that could do with improvement are flexibility, guidance, performance, transparency, collaboration. And we can't do this alone, we need feedbac. So we see this more as a social problem rather than a technical problem.
 
-Improving on this needs community buy-in
+As NIU we have a successful track record of building software for research at a community level.
+:::
 
-## Building tools and community in multi-photon imaging
+## PhotonMosaic: functional imaging analysis software at a community level
 
-Laura, Joanne, Alessandro,
-Arielle, Alessio, Johannes, Jerome, Sean, 
-Georg
-Florian,Adam Charles
+![headshots of the developer team](img/developer_team.png)
 
 ## Photon-mosaic: Vision
 
@@ -46,35 +79,56 @@ Florian,Adam Charles
 * flexibility
 * performance
 * quality control
-* community
 
 ## Simplicity
 
+```python
+imaging = read_scan_image_imaging(file_path=file_path)
+
+motion = compute_motion(imaging=imaging, method="suite2p")
+registered_imaging = register_motion(imaging=imaging, motion=motion)
+
+segmented_rois = run_segmentation(
+    registered_imaging,
+    method="suite2p",
+    algorithm="cellpose",
+)
+
+roi_analyzer = create_roi_analyzer(cell_rois, registered_imaging)
+roi_analyzer.compute("neuropil")
+roi_analyzer.compute("fluorescence", use_neuropil=True)
+df_over_f = roi_analyzer.compute("df_over_f").get_data(outputs="recording")
+```
 
 ## Flexibility
 
-`photon-mosaic` API
+```python
+imaging = read_scan_image_imaging(file_path=file_path)
 
+motion = compute_motion(imaging=imaging, method="normcorre")
+registered_imaging = register_motion(imaging=imaging, motion=motion)
+
+segmented_rois = run_segmentation(
+    registered_imaging,
+    method="suite2p",
+    algorithm="cellpose",
+)
+
+roi_analyzer = create_roi_analyzer(cell_rois, registered_imaging)
+roi_analyzer.compute("neuropil")
+roi_analyzer.compute("fluorescence", use_neuropil=True)
+df_over_f = roi_analyzer.compute("df_over_f").get_data(outputs="recording")
+```
+
+::: {.notes}
 * Python API wrapping / re-implementing CaImAn + Suite2p
 * `spikeinterface`-like design
-
-TODO: code example
-
-## Community
-
-3 conference poster
-hackdays
-frequent check-ins with researchers
-you?
-
-## Example
-
-synthetic data (gcamp6s parameters)
-
-## Initial release
-
+:::
 
 ## performance at scale
 `photon-mosaic-pipeline`
 
 * scalability: pipelining tool for HPC batch jobs
+
+## Please give us feedback and get involved!
+
