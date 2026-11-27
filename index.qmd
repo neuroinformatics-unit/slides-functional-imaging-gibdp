@@ -5,7 +5,7 @@ author: Alessandro Felder, Igor Tatarnikov
 date: 1. December 2026
 format:
   revealjs:
-    footer: "Sainsbury Wellcome Centre| GIDBP meeting | 1. December 2026"
+    footer: "Sainsbury Wellcome Centre | GIDBP meeting | 1. December 2026"
 ---
 
 
@@ -28,6 +28,8 @@ I am Alessandro, this is Igor. We are part of the Neuroinformatics Unit based he
 ::: {.notes}
 So Igor and I like working with imaging data, and so we are lucky to be able to work on imaging-related software. We both work on our neuroanatomy tools, which include BrainGlobe, which you may have heard about, and we both also work with functional imaging data. We have close ties to the microscopy facility here, and Igor is actually shared between the NIU and the facility. He will talk to you about the functional imaging work he is doing with them later on. What I am going to focus on today is something called "photon-mosaic", which is a collection of software tools to analyse functional imaging data in systems neuroscience.
 :::
+
+{{< include slides/photon-mosaic.qmd >}}
 
 ## References {.smaller}
 
