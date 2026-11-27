@@ -1,80 +1,323 @@
 
-## We are pushing the limits of imaging neural activity with light
 
 
-* deeper in the brain: three-photon imaging (Cloves + Margrie 2025)
-* higher frequency: 
-  * voltage imaging
-  * various GECI indicators 
-* more of the brain: meso-scale imaging
-* in a more naturalistic setting: freely moving
-* larger volumes: light bead microscopy
-* for longer: multiday recordings
-* more control: optical stimulation
+## Processing multiphoton data 
 
-Analysis tools need to be chosen appropriately.
+:::: {.columns style="align-items: flex-start;"}
+::: {.column width="21%"}
+![](img/external_figures/suite2p_sample.mp4){height="170px" autoplay="true" loop="true" muted="true"}
 
-## Analysis of multiphoton imaging series
 
-* image acquisition ) -> motion correction -> segmentation on a reference image -> fluorescence extraction -> DF/F -> deconvolution ( -> downstream analysis
+image acquisition
+:::
 
-## Analysis software ecosystem is fragmented, fragile and rigid
+::: {.column width="21%"}
+![](img/external_figures/suite2p_sample_registered.mp4){height="170px" autoplay="true" loop="true" muted="true"}
 
-Widely adopted tools:
-Suite2p: good for cortical two-photon. Most popular. Bugs don't get ans
-CaImAn: good for 1-photon (worse SNR)
-In practice, both applied to similar experiments.
-Many labs also roll their own
 
-Commercial tools (?)
+motion correction
+:::
 
-Not interoperable -> hard to benchmark, hard to compare, hard to adapt to new experiments
-Need flexibility, guidance, performance, transparency, collaboration
+::: {.column width="22%"}
+![](img/external_figures/suite2p_sample_segmentation.png){height="170px" style="margin: 0;"}
 
-Improving on this needs community buy-in
+regions of interest
+:::
 
-## Building tools and community in multi-photon imaging
+::: {.column width="32%"}
+![](img/external_figures/traces.png){height="170px" style="margin: 0;"}
 
-Laura, Joanne, Alessandro,
-Arielle, Alessio, Johannes, Jerome, Sean, 
-Georg
-Florian,Adam Charles
+fluorescence extraction
+:::
+::::
 
-## Photon-mosaic: Vision
 
-* simplicity
+::: {.notes}
+Multi-photon imaging is technique we can use to learn about what is going on in the brain, and making sense of this data requires good analysis tools.
+
+In an analysis pipeline, we would typically have these kind of steps in this sequence.
+:::
+
+
+## Processing multiphoton data
+
+:::: {.columns}
+::: {.column width="33%"}
+![](img/suite2p_logo.png){height=150px alt-text="Suite2p logo"}
+
+suite2p
+:::
+
+::: {.column width="33%"}
+![](img/caiman_logo.png){height=220px alt-text="CaImAn logo"}
+:::
+
+::: {.column width="33%"}
+Miscellaneous other tools and lab-specific scripts
+:::
+::::
+
+Existing open-source tools are great for standard experiments. They are not particularly modular or interoperable.
+
+## Advancing multiphoton imaging {.smaller}
+
+::: {.incremental}
+
+* multi-day recordings
+* imaging at higher frequencies
+* deeper in the brain
+* larger fields of view
+* volumetric imaging
+* in freely moving animals
+
+:::
+
+#
+
+To deal with this complexity, we need to coordinate analysis software at a community level.
+
+::: {.incremental style="font-size: 0.6em;"}
+* BrainGlobe (software for neuroanatomy): ~150 contributors
+* `movement` (software for behavioural video analysis): ~70 contributors
+* `spikeinterface` (softwaer for electrophysiology analysis): two core developers based at SWC
+:::
+
+::: {.notes}
+
+All of this has some problems. The tools are not interoperable with each other: if you use the registration algorithm from one, you are locked-into the segmentation step of the same tool. Work is duplicated, and the support for these tools could be better.
+
+So to adapt to our changing needs, we need to improve on this. Areas that could do with improvement are flexibility, guidance, performance, transparency, collaboration. And we can't do this alone, we need feedback. So we see this more as a social problem rather than a technical problem.
+
+As NIU we have a successful track record of building software for research at a community level.
+:::
+
+## `photon-mosaic`
+
+:::: {.columns style="display: flex; gap: 1em;"}
+::: {.column style="width: 30%; display: flex; justify-content: center; align-items: center;"}
+![](img/photon-mosaic_logo.png){height=200px alt-text="logo of the photon-mosaic project"}
+:::
+
+::: {.column width="70%"}
+![](img/developer_team_2.png){height=400px alt-text="headshots of the developer team"}
+:::
+::::
+
+Functional imaging analysis software at a community level
+
+## `photon-mosaic`
+
+:::: {.columns style="display: flex; gap: 1em;"}
+::: {.column style="width: 30%; display: flex; justify-content: center; align-items: center;"}
+![](img/photon-mosaic_logo.png){height=200px alt-text="logo of the photon-mosaic project"}
+:::
+
+::: {.column width="65%"}
+![](img/community_team.png){height=400px alt-text="headshots of the wider contributing team"}
+:::
+::::
+
+Functional imaging analysis software at a community level
+
+## `photon-mosaic`: Vision
+
+:::: {.columns style="display: flex; gap: 1em;"}
+::: {.column style="width: 30%; display: flex; justify-content: center; align-items: center;"}
+![](img/photon-mosaic_logo.png){height=200px alt-text="logo of the photon-mosaic project"}
+:::
+
+::: {.column width="70%"}
 * flexibility
+* simplicity
 * performance
-* quality control
-* community
+:::
+::::
 
-## Simplicity
+
+## `photon-mosaic`: Vision
+
+![](img/framework_schematic.png)
+
+::: {.incremental}
+* Python library: one function per step
+* Pipeline: configure and run on HPC with one command
+:::
 
 
 ## Flexibility
 
-`photon-mosaic` API
+:::: {.columns style="display: flex; gap: 1em; align-items: center;"}
+::: {.column style="width: 50%;"}
+![](img/external_figures/suite2p_sample_registered.mp4){width="100%" autoplay="false" loop="false" muted="true"}
+:::
 
-* Python API wrapping / re-implementing CaImAn + Suite2p
-* `spikeinterface`-like design
+::: {.column style="width: 50%;"}
+```{.python code-line-numbers="3"}
+motion = compute_motion(
+    imaging=imaging, 
+    method="suite2p")
+registered_imaging = register_motion(
+    imaging=imaging, 
+    motion=motion)
+```
+motion correction
+:::
+::::
 
-TODO: code example
+## Flexibility
 
-## Community
+:::: {.columns style="display: flex; gap: 1em; align-items: center;"}
+::: {.column style="width: 50%;"}
+![](img/external_figures/suite2p_sample_registered.mp4){width="100%" autoplay="false" loop="false" muted="true"}
+:::
 
-3 conference poster
-hackdays
-frequent check-ins with researchers
-you?
+::: {.column style="width: 50%;"}
+```{.python code-line-numbers="3"}
+motion = compute_motion(
+    imaging=imaging, 
+    method="normcorre")
+registered_imaging = register_motion(
+    imaging=imaging, 
+    motion=motion)
+```
+motion correction
+:::
+::::
 
-## Example
+## Simplicity 
 
-synthetic data (gcamp6s parameters)
+:::: {.columns style="display: flex; gap: 1em; align-items: center;"}
+::: {.column style="width: 50%;"}
+![](img/external_figures/suite2p_sample_segmentation.png){width="100%"}
+:::
 
-## Initial release
+::: {.column style="width: 50%;"}
+```python
+segmented_rois = run_segmentation(
+    registered_imaging,
+    method="suite2p",
+    algorithm="cellpose",
+)
+```
+segmentation
+:::
+::::
+
+## Simplicity {.smaller}
+
+```python
+photon-mosaic-pipeline --config config.yaml
+```
+
+* Edit the default configuration file
+* Run on many files with a single command
+
+## Performance {.smaller}
+
+```python
+photon-mosaic-pipeline --config config.yaml --jobs 5
+```
+
+* Distribute across HPC jobs
+* Re-runs only required parts of pipeline
+
+# Get involved!
+
+To deal with the complexity of functional imaging data,
+we need to coordinate analysis software at a community level.
 
 
-## performance at scale
-`photon-mosaic-pipeline`
+<style>
+.link-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  margin-right: 0.3em;
+}
+</style>
 
-* scalability: pipelining tool for HPC batch jobs
+[<svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4.5" ry="10"/><path d="M2 12h20M4 6.5h16M4 17.5h16"/></svg>photon-mosaic.org](https://photon-mosaic.org)
+
+[<svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H10l-5 4v-4H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/></svg>neuroinformatics.zulipchat.com](https://neuroinformatics.zulipchat.com)
+
+[<svg class="link-icon" viewBox="0 0 32 32" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 0C7.16 0 0 7.16 0 16C0 23.08 4.58 29.06 10.94 31.18C11.74 31.32 12.04 30.84 12.04 30.42C12.04 30.04 12.02 28.78 12.02 27.44C8 28.18 6.96 26.46 6.64 25.56C6.46 25.1 5.68 23.68 5 23.3C4.44 23 3.64 22.26 4.98 22.24C6.24 22.22 7.14 23.4 7.44 23.88C8.88 26.3 11.18 25.62 12.1 25.2C12.24 24.16 12.66 23.46 13.12 23.06C9.56 22.66 5.84 21.28 5.84 15.16C5.84 13.42 6.46 11.98 7.48 10.86C7.32 10.46 6.76 8.82 7.64 6.62C7.64 6.62 8.98 6.2 12.04 8.26C13.32 7.9 14.68 7.72 16.04 7.72C17.4 7.72 18.76 7.9 20.04 8.26C23.1 6.18 24.44 6.62 24.44 6.62C25.32 8.82 24.76 10.46 24.6 10.86C25.62 11.98 26.24 13.4 26.24 15.16C26.24 21.3 22.5 22.66 18.94 23.06C19.52 23.56 20.02 24.52 20.02 26.02C20.02 28.16 20 29.88 20 30.42C20 30.84 20.3 31.34 21.1 31.18C27.42 29.06 32 23.06 32 16C32 7.16 24.84 0 16 0V0Z"/></svg>github.com/photon-mosaic](https://github.com/photon-mosaic)
+
+## Get involved! {visibility="hidden"}
+
+:::: {.columns style="display: flex; gap: 1em;"}
+::: {.column style="width: 30%; display: flex; justify-content: center; align-items: center;"}
+![](img/photon-mosaic_logo.png){height=200px alt-text="logo of the photon-mosaic project"}
+:::
+
+::: {.column width="70%"}
+![](img/developer_team_2.png){height=400px alt-text="headshots of the developer team"}
+:::
+::::
+
+Functional imaging analysis software at a community level
+
+
+<!-- hidden alternative slides below. ignore -->
+
+
+## Simplicity  {visibility="hidden"}
+
+:::: {.columns style="display: flex; gap: 1em; align-items: center;"}
+::: {.column style="width: 50%;"}
+![](img/external_figures/suite2p_sample_registered.mp4){width="100%" autoplay="true" loop="true" muted="true"}
+:::
+
+::: {.column style="width: 50%;"}
+```python
+motion = compute_motion(
+    imaging=imaging, 
+    method="suite2p")
+registered_imaging = register_motion(
+    imaging=imaging, 
+    motion=motion)
+```
+motion correction
+:::
+::::
+
+
+## Simplicity  {visibility="hidden"}
+
+:::: {.columns style="display: flex; gap: 1em; align-items: center;"}
+::: {.column style="width: 40%;"}
+![](img/external_figures/traces.png){width="100%"}
+:::
+
+::: {.column style="width: 60%;"}
+```python
+roi_analyzer = create_roi_analyzer(cell_rois, registered_imaging)
+roi_analyzer.compute("neuropil")
+roi_analyzer.compute("fluorescence", use_neuropil=True)
+df_over_f = roi_analyzer.compute("df_over_f").get_data(outputs="recording")
+```
+extract fluorescence
+:::
+::::
+
+
+
+## PhotonMosaic {visibility="hidden"}
+
+<style>
+.link-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  margin-right: 0.3em;
+}
+</style>
+
+[<svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4.5" ry="10"/><path d="M2 12h20M4 6.5h16M4 17.5h16"/></svg>photon-mosaic.org](https://photon-mosaic.org)
+
+[<svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H10l-5 4v-4H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/></svg>neuroinformatics.zulipchat.com](https://neuroinformatics.zulipchat.com)
+
+[<svg class="link-icon" viewBox="0 0 32 32" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 0C7.16 0 0 7.16 0 16C0 23.08 4.58 29.06 10.94 31.18C11.74 31.32 12.04 30.84 12.04 30.42C12.04 30.04 12.02 28.78 12.02 27.44C8 28.18 6.96 26.46 6.64 25.56C6.46 25.1 5.68 23.68 5 23.3C4.44 23 3.64 22.26 4.98 22.24C6.24 22.22 7.14 23.4 7.44 23.88C8.88 26.3 11.18 25.62 12.1 25.2C12.24 24.16 12.66 23.46 13.12 23.06C9.56 22.66 5.84 21.28 5.84 15.16C5.84 13.42 6.46 11.98 7.48 10.86C7.32 10.46 6.76 8.82 7.64 6.62C7.64 6.62 8.98 6.2 12.04 8.26C13.32 7.9 14.68 7.72 16.04 7.72C17.4 7.72 18.76 7.9 20.04 8.26C23.1 6.18 24.44 6.62 24.44 6.62C25.32 8.82 24.76 10.46 24.6 10.86C25.62 11.98 26.24 13.4 26.24 15.16C26.24 21.3 22.5 22.66 18.94 23.06C19.52 23.56 20.02 24.52 20.02 26.02C20.02 28.16 20 29.88 20 30.42C20 30.84 20.3 31.34 21.1 31.18C27.42 29.06 32 23.06 32 16C32 7.16 24.84 0 16 0V0Z"/></svg>github.com/photon-mosaic](https://github.com/photon-mosaic)
+
+Biweekly open meetings

@@ -18,13 +18,15 @@ color:
     niu-green-dark: "#04B46D"
     bg-orange: "#EE9040"
     blue: "#4178f3"
+    pm-blue: "#3574AE"
+    pm-yellow: "#FFDF7D"
   # Flip the background/foregroud colors for dark mode
   background: white
   foreground: dark-grey
-  primary: niu-green
-  info: blue
-  success: niu-green
-  warning: bg-orange
+  primary: pm-blue
+  info: pm-blue
+  success: pm-blue
+  warning: pm-yellow
 
 
 typography:
