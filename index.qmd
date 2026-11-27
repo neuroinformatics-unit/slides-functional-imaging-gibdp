@@ -1,6 +1,5 @@
 ---
-title: Functional Imaging
-subtitle: Making analysis platforms for functional imaging at SWC
+title: Analysis Platforms for Functional Imaging
 author: Alessandro Felder, Igor Tatarnikov
 date: 1. December 2026
 format:
@@ -21,7 +20,7 @@ I am Alessandro, this is Igor. We are part of the Neuroinformatics Unit based he
 [https://neuroinformatics.dev](https://neuroinformatics.dev)
 :::
 
-## Functional imaging analysis 
+## Functional imaging 
 
 ![](img/niu/focus-on-ophys.png){height=5in}
 
@@ -31,7 +30,7 @@ So Igor and I like working with imaging data, and so we are lucky to be able to 
 
 {{< include slides/photon-mosaic.qmd >}}
 
-## References {.smaller}
+## References {.smaller visibility="hidden"}
 
 This is how you create a references section, i.e. a bibliography.
 
